@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>绘制路径</title>
+</head>
+<body>
+<canvas id="myCanvas" height="600" width="600">
+  你的浏览器不支持canvas
+</canvas>
+<script>
+
+  // 得到canvas画布的上下文
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+
+  ctx.beginPath();
+  ctx.moveTo(100, 100);
+  ctx.lineTo(400, 180);
+  ctx.lineTo(300, 50);
+  ctx.lineTo(130, 80);
+  // ctx.closePath();
+  ctx.strokeStyle = 'black';
+  ctx.stroke();
+  ctx.fillStyle = 'orange';
+  ctx.fill();
+
+</script>
+
+</body>
+</html>

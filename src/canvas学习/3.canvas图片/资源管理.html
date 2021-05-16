@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>资源管理</title>
+
+  <style>
+      canvas {
+          border: 1px #333 solid;
+      }
+  </style>
+
+</head>
+<body>
+<canvas height="600" id="myCanvas" width="600">
+  你的浏览器不支持canvas
+</canvas>
+
+<script>
+  // 得到canvas画布的上下文
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+
+
+  function Game() {
+    this.dom = document.querySelector('#myCanvas');
+    this.ctx = this.dom.getContext('2d');
+
+    // 添加属性，保存所需要的图片地址
+    this.R = {
+      '0': './imgs/0.png',
+      '1': './imgs/1.png',
+      '2': './imgs/2.png',
+      '3': './imgs/3.png',
+    }
+    let allAmount = Object.keys(this.R).length;
+    // 加载完毕的数量
+    let count = 0;
+    for (let key in this.R) {
+      if (this.R.hasOwnProperty(key)) {
+        let img = new Image();
+        img.src = this.R[key];
+        let self = this;
+        img.onload = function () {
+          if (++ count === allAmount) {
+            self.ctx.font = '30px Arial black';
+            self.ctx.fillText('图片资源加载完毕', 100, 50);
+          }
+        }
+        this.R[key] = img;
+        console.log(this.R[key]);
+      }
+
+    }
+
+    console.log(this.dom);
+  }
+
+  new Game();
+
+</script>
+</body>
+</html>
+
+

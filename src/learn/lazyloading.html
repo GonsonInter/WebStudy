@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片懒加载</title>
+
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+          overflow:auto;
+      }
+
+      div {
+          overflow: auto;
+      }
+
+      img {
+          display: block;
+      }
+  </style>
+</head>
+<body>
+
+<div id="container">
+
+</div>
+
+
+<script>
+  let frag = document.createDocumentFragment();
+  new Array(10).fill(null).forEach(() => {
+    let elm = document.createElement('img');
+    elm.dataImg = './imgs/image-20210325160741466.png';
+    frag.appendChild(elm);
+  })
+  document.getElementById('container').appendChild(frag);
+
+  let imgs = document.querySelectorAll('img');
+
+  function lazyLoad() {
+    let height = document.documentElement.clientHeight;
+    imgs.forEach(img => {
+      if (img.getBoundingClientRect().top <= height + 100)
+        img.src = img.dataImg;
+        // console.log(img.getBoundingClientRect())
+    })
+  }
+
+  function debounce(fun) {
+    let timer = null;
+    return function () {
+      if (timer)
+        clearTimeout(timer);
+      timer = setTimeout(fun, 500);
+    }
+  }
+
+  lazyLoad();
+  window.addEventListener('scroll', debounce(lazyLoad))
+
+</script>
+
+</body>
+</html>

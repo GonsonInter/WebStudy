@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue响应式的实现</title>
+</head>
+<body>
+ <script>
+  function updateView() {
+    console.log('视图更新！')
+  }
+
+  // 深度监听数组
+  const oldArrayProperty = Array.prototype;
+  const arrProto = Object.create(oldArrayProperty);
+
+  ['push',
+    'pop',
+    'shift',
+    'unshift',
+    'slice',
+    'splice'].forEach(methodName => {
+    arrProto[methodName] = function() {
+      oldArrayProperty[methodName].call(this, ...arguments)
+      updateView();
+    }
+  })
+
+
+  // 深度监听普通对象
+  function defineReactive(target, key, value) {
+    // 深度监听
+    observer(value);
+
+    Object.defineProperty(target, key, {
+      get() {
+        return value;
+      },
+      set(newValue) {
+        if (newValue !== value) {
+          // 深度监听
+          observer(newValue);
+          value = newValue
+          // 触发视图更新
+          updateView();
+        }
+      }
+    })
+  }
+
+  function observer(target) {
+    if (typeof target !== 'object' || target === null) {
+      return target;
+    }
+
+    if (Array.isArray(target))  target.__proto__ = arrProto;
+
+    Object.keys(target).forEach(key => {
+      defineReactive(target, key, target[key]);
+    })
+  }
+
+  var person = {
+    name: 'zhangsan',
+    age: 15,
+    info: {
+      city: 'beijing',
+      other: {
+        email: 'aaaaa@qq.com',
+        id: 20
+      }
+    }
+  }
+
+  var arr = []
+
+  observer(person);
+  observer(arr);
+
+ </script>
+</body>
+</html>

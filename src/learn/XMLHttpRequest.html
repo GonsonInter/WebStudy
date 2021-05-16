@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AJAX</title>
+</head>
+<body>
+
+<script>
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', '/api', false);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      console.log(xhr.responseText);
+    }
+  }
+  xhr.send(null);
+
+
+  function ajax(url, method) {
+    const p = new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200)
+            resolve(xhr.responseText);
+          else
+            reject(new Error('发生错误'));
+        }
+      }
+    });
+    return p;
+  }
+
+</script>
+
+</body>
+</html>

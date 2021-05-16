@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>一个表格</title>
+
+  <style>
+
+      body {
+          padding: 0;
+          margin: 0;
+      }
+
+      table {
+          border-collapse: collapse;
+          display: inline-block;
+      }
+
+      table tr:first-child {
+          height: 60px;
+      }
+
+      th {
+          background-color: #aaaaaa;
+      }
+
+      td, th {
+          width: 150px;
+          border: #333333 1px solid;
+          height: 40px;
+          line-height: 40px;
+      }
+
+      tr:nth-child(odd) {
+          background-color: #f3f1f1;
+      }
+
+      tr:not(:nth-child(1)):hover {
+          cursor: pointer;
+          background-color: #f1ecd3;
+      }
+
+      td:active {
+          background-color: #b4b3b3;
+      }
+
+  </style>
+
+</head>
+<body>
+
+
+<div>
+  <button id="btn">新增一行</button>
+  <button id="btn1">删除一行</button>
+</div>
+<table>
+  <tr>
+    <th>姓名</th>
+    <th>班级</th>
+    <th>性别</th>
+    <th>爱好</th>
+  </tr>
+  <tr>
+    <td>张三</td>
+    <td>1班</td>
+    <td>男</td>
+    <td>睡觉</td>
+  </tr>
+  <tr>
+    <td>李四</td>
+    <td>2班</td>
+    <td>男</td>
+    <td>吃饭</td>
+  </tr>
+  <tr>
+    <td>王五</td>
+    <td>2班</td>
+    <td>男</td>
+    <td>吃饭</td>
+  </tr>
+  <tr>
+    <td>赵六</td>
+    <td>2班</td>
+    <td>男</td>
+    <td>吃饭</td>
+  </tr>
+</table>
+
+
+
+<svg width="1276" height="634" xmlns="http://www.w3.org/2000/svg">
+  <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+  <g>
+    <title>background</title>
+    <rect fill="#fff" id="canvas_background" height="636" width="1278" y="-1" x="-1"/>
+    <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+      <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+    </g>
+  </g>
+  <g>
+    <title>Layer 1</title>
+    <rect id="svg_1" height="135" width="347" y="160.05" x="261.5" stroke-width="1.5" stroke="#000" fill="#fff"/>
+    <rect id="svg_2" height="176" width="325" y="118.05" x="540.5" stroke-width="1.5" stroke="#000" fill="#fff"/>
+    <ellipse ry="75.5" rx="107.5" id="svg_3" cy="175.55" cx="401" stroke-width="1.5" stroke="#000" fill="#fff"/>
+    <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_6" y="328.05" x="306.5" fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#000000">wadwad</text>
+  </g>
+</svg>
+
+<script>
+  document.getElementById('btn').addEventListener('click', function () {
+    let table = document.querySelector('tbody');
+    let tr = document.createElement('tr');
+    tr.innerHTML = '<td>马七</td><td>1班</td><td>女</td><td>睡觉</td>';
+    table.appendChild(tr);
+  });
+
+  let table = document.querySelector('tbody');
+  document.getElementById('btn1').onclick = function () {
+    console.log(table.children)
+    if (table.children.length > 1) {
+      table.removeChild(table.children[table.children.length - 1]);
+    }
+  }
+
+  let tableData = [
+    {
+      name: '张三',
+      class: '1班',
+      sex: '男',
+      hobby: '睡觉'
+    }, {
+      name: '李四',
+      class: '2班',
+      sex: '男',
+      hobby: '吃饭'
+    },{
+      name: '王五',
+      class: '2班',
+      sex: '男',
+      hobby: '吃饭'
+    },{
+      name: '赵六',
+      class: '2班',
+      sex: '男',
+      hobby: '吃饭'
+    },
+  ]
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Proxy实现响应式</title>
+</head>
+<body>
+
+<script>
+
+  function reactive(target = {}) {
+    if (typeof target !== 'object' || target == null) {
+      // 不是对象或数组，直接返回
+      return target;
+    }
+
+    // 代理配置
+    const proxyConf = {
+
+      get (target, key, receiver) {
+        // 只用处理自身属性（非原型属性）
+        const ownKeys = Reflect.ownKeys(target);
+        if (ownKeys.includes(key)) {
+          console.log('get', key);    // 监听
+        }
+
+        const result = Reflect.get(target, key, receiver)
+
+        //深度监听
+        return reactive(result);
+      },
+
+      set (target, key, val, receiver) {
+        console.log(receiver)
+        // 重复的数据不处理
+        if (target === target[key])   return true;
+
+        // 判断是不是新增的属性
+        const ownKeys = Reflect.ownKeys(target);
+        if (ownKeys.includes(key)) {
+          console.log('修改了已有的key', key);
+        } else {
+          console.log('新增了一个key', key)
+        }
+
+        const result = Reflect.set(target, key, val, receiver);
+        console.log('set', key, val);
+
+        return result;
+      },
+
+      deleteProperty(target, key) {
+        const result = Reflect.deleteProperty(target, key);
+        console.log('delete property', key);
+        return result;
+      }
+    }
+
+    // 生成代理对象
+    return new Proxy(target, proxyConf);
+  }
+
+  // 测试数据
+  const data = {
+    name: '张三',
+    age: 20,
+    info: {
+      city: 'beijing'
+    }
+  }
+
+  const proxyData = reactive(data);
+
+</script>
+
+</body>
+</html>

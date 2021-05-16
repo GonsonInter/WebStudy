@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>事件代理，事件绑定通用函数</title>
+</head>
+<body>
+
+<script>
+
+  function bindEvent(elem, type, selector, fn) {
+    if (!fn) {
+      fn = selector;
+      selector = null;
+    }
+    elem.addEventListener(type, event => {
+      if (selector) {   // 有selector的时候是代理绑定
+        if (event.target.matches(selector)) {
+          fn.call(target, event);
+        }
+      } else {
+        fn.call(target, fn);
+      }
+    })
+  }
+
+</script>
+
+</body>
+</html>

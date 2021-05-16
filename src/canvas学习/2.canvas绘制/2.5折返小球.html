@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>折返小球</title>
+
+  <style>
+      body {
+          padding: 0;
+          margin: 0;
+      }
+
+      canvas {
+          border: 1px #333333 solid;
+          box-sizing: border-box;
+          display: block;
+          margin: 6px auto;
+      }
+  </style>
+</head>
+<body>
+<canvas id="myCanvas"></canvas>
+
+
+<script>
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth - 20;
+  canvas.height = window.innerHeight - 20;
+
+  class Ball {
+    constructor() {
+      this.r = 20;
+      this.x = this.r + Math.random() * (canvas.width - 2 * this.r);
+      this.y = this.r + Math.random() * (canvas.height - 2 * this.r);
+      this.dx = Math.floor(Math.random() * 10) - 5;
+      this.dy = Math.floor(Math.random() * 10) - 5;
+      this.color = 'gray';
+      ballArr.push(this);
+      // 记录一下自己的位置
+      this.index = ballArr.length - 1;
+    }
+    render() {
+      ctx.beginPath();
+      ctx.globalAlpha = 1;
+      ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+
+      // 画线
+      for (let i = this.index; i < ballArr.length; i ++) {
+        let dist = Math.sqrt(Math.pow(this.x - ballArr[i].x, 2) +
+            Math.pow(this.y - ballArr[i].y, 2));
+        if (dist < 150){
+          ctx.strokeStyle = 'black';
+          ctx.beginPath();
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(ballArr[i].x, ballArr[i].y);
+          ctx.closePath();
+          ctx.stroke();
+        }
+      }
+    }
+    update() {
+      this.x += this.dx;
+      this.y += this.dy;
+      // 反弹
+      if (this.x < this.r || this.x > canvas.width - this.r){
+        this.dx = -this.dx;
+      }
+      if (this.y < this.r || this.y > canvas.height - this.r){
+        this.dy = -this.dy;
+      }
+    }
+  }
+
+  let ballArr = [];
+
+  // 创建50个球
+  for (let i = 0; i < 50; i ++) {
+    new Ball();
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ballArr.forEach(ball => {
+      ball.update();
+      ball.render();
+    })
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
+</body>
+</html>

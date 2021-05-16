@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>闭包</title>
+</head>
+<body>
+
+<script>
+  Function.prototype.myBind = function () {
+    // const args = Array.from(arguments);
+    const args = Array.prototype.slice.call(arguments);
+    let _this = args.shift();
+    let self = this;
+    return function () {
+      return self.call(_this, ...args);
+    }
+  }
+
+  function fn(x, y) {
+    console.log(this.a + '   ' + this.b);
+    console.log(x + '   ' + y);
+  }
+
+  let newFn = fn.myBind({ a: 100, b: 200 }, 300, 400)
+
+  newFn();
+
+
+  // 闭包的用处一，隐藏数据
+  function createCache() {
+    const data = {};
+    return {
+      set: function (key, val) {
+        data[key] = val;
+      },
+      get: function (key, val) {
+        return data[key];
+      }
+    }
+  }
+
+  function clickTest() {
+    let frag = document.createDocumentFragment();
+    for (var i = 0; i < 10; i ++) {
+      (function(i) {
+        let a = document.createElement('a');
+        a.innerHTML = i + '<br>';
+        a.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert(i);
+        })
+        frag.appendChild(a);
+      })(i)
+    }
+    document.body.appendChild(frag);
+  }
+
+  clickTest();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>使用图片</title>
+
+  <style>
+      canvas {
+          border: 1px #333 solid;
+      }
+  </style>
+
+</head>
+<body>
+<canvas height="600" id="myCanvas" width="600">
+  你的浏览器不支持canvas
+</canvas>
+
+<script>
+  // 得到canvas画布的上下文
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+
+  // 创建一个img元素
+  let img = new Image();
+  img.src = './imgs/0.png';
+  img.onload = function () {
+    ctx.drawImage(img, 0, 0, 600, 400);
+  }
+
+</script>
+</body>
+</html>
+
+

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<script>
+  function deepClone(obj = {}) {
+    if (!obj || typeof obj !== 'object')  return obj;
+    let newObj = Array.isArray(obj) ? [] : {};
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key))
+        newObj[key] = deepClone(obj[key]);
+    }
+    return newObj;
+  }
+
+  let obj = {
+    a : 123456,
+    b : 'wwwwaaa',
+    c : {
+      aa : 123,
+      bb : 'wadad',
+      cc : ['wad', 213, {
+        aaa : 123,
+        bbb : [1, 2, 3]
+      }]
+    }
+  }
+
+  console.log(obj);
+  let newObj = deepClone(obj);
+  console.log(newObj);
+</script>
+
+</body>
+</html>

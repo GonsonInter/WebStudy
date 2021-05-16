@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>面向对象实现动画</title>
+</head>
+<body>
+
+<canvas id="myCanvas" height="600" width="600">
+  你的浏览器不支持canvas
+</canvas>
+
+<script>
+  // 得到canvas画布的上下文
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+
+  function Rect(x, y, w, h, color) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    this.color = color;
+  }
+  Rect.prototype.update = function () {
+    this.x ++;
+  };
+  Rect.prototype.render = function () {
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.w, this.h);
+  };
+
+  let r1 = new Rect(100, 100, 50, 50, 'purple');
+  let r2 = new Rect(100, 200, 100, 100, 'red');
+  (function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    r1.update();
+    r1.render();
+    r2.update();
+    r2.render();
+    requestAnimationFrame(animate);
+  })()
+
+</script>
+
+</body>
+</html>

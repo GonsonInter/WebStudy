@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+      #lamp {
+          width: 180px;
+          border: 2px solid #333333;
+          border-radius: 12px;
+          background-color: #343739;
+          box-shadow: 0 0 10px #424542;
+      }
+      #lamp > div {
+          height: 120px;
+          margin: 30px;
+          border-radius: 50%;
+          background-color: #5d6378;
+      }
+  </style>
+
+</head>
+<body>
+
+<div id="lamp">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+
+<script>
+  function changeColor(num) {
+    let lights = document.querySelectorAll('#lamp>div');
+    let colors = ['red', 'yellow', 'green'];
+    lights.forEach(item => item.style.backgroundColor = '#5d6378');
+    lights[num].style.backgroundColor = colors[num];
+  }
+
+  function light(num, interval) {
+    return new Promise(resolve => {
+      changeColor(num);
+      setTimeout(resolve, interval)
+    })
+  }
+
+  async function start(interval) {
+    let i = 0;
+    while (true) {
+      await light(i, interval);
+      if (++i === 3)  i = 0;
+    }
+  }
+
+  start(1000);
+
+</script>
+
+</body>
+</html>

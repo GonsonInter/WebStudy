@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>滚动的车轮</title>
+
+  <style>
+      canvas {
+          border: 1px #333 solid;
+      }
+  </style>
+
+</head>
+<body>
+<canvas height="600" id="myCanvas" width="600">
+  你的浏览器不支持canvas
+</canvas>
+
+<script>
+  // 得到canvas画布的上下文
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+
+  // 创建一个img元素
+  let img = new Image();
+  img.src = './wheel.png';
+  img.onload = function () {
+    let deg = 0;
+    let x = 300;
+    let last = new Date();
+    (function animate() {
+      let now = new Date();
+      deg += (now - last) * 0.05;
+      last = now;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(x, 300);
+      ctx.rotate(deg);
+      ctx.drawImage(img, -400 / 2, -400 / 2, 400, 400)
+      ctx.restore();
+      requestAnimationFrame(animate);
+    })()
+  }
+
+</script>
+</body>
+</html>

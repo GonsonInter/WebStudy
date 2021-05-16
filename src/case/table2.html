@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+
+<style>
+  body {
+      margin: 0;
+      padding: 0;
+  }
+
+  table {
+      border-collapse: collapse;
+  }
+
+  th {
+      height: 60px;
+      width: 150px;
+  }
+
+  td, th {
+      width: 150px;
+      border: #333333 1px solid;
+      line-height: 40px;
+  }
+
+  th {
+      background-color: #aaaaaa;
+  }
+
+  tr:hover {
+      background-color: #D3DCE6;
+  }
+
+  tr:nth-child(odd) {
+      background-color: #eeeeee;
+  }
+
+</style>
+
+<body>
+
+<button id="btn1">添加一行</button>
+<button id="btn2">删除一行</button>
+
+<table>
+  <tr>
+    <th>姓名</th>
+    <th>班级</th>
+    <th>性别</th>
+    <th>爱好</th>
+  </tr>
+  <tr>
+    <td>张三</td>
+    <td>1班</td>
+    <td>男</td>
+    <td>睡觉</td>
+  </tr>
+  <tr>
+    <td>李四</td>
+    <td>2班</td>
+    <td>男</td>
+    <td>吃饭</td>
+  </tr>
+  <tr>
+    <td>王五</td>
+    <td>2班</td>
+    <td>男</td>
+    <td>吃饭</td>
+  </tr>
+  <tr>
+    <td>赵六</td>
+    <td>2班</td>
+    <td>男</td>
+    <td>吃饭</td>
+  </tr>
+</table>
+
+<script>
+
+  let table = document.querySelector('tbody');
+  console.log(table)
+
+  document.getElementById('btn1').addEventListener('click', function () {
+    let str = '<td>马七</td><td>1班</td><td>女</td><td>睡觉</td>';
+    let tr = document.createElement('tr');
+    tr.innerHTML = str;
+    table.appendChild(tr);
+  })
+
+  document.getElementById('btn2').addEventListener('click', function () {
+     let children = table.children;
+     table.removeChild(children[children.length - 1]);
+  })
+</script>
+
+</body>
+</html>

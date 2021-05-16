@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      #container {
+          background-color: #eeeeee;
+          width: 100%;
+          height: 100vh;
+      }
+
+      #leftBar {
+          float: left;
+          position: relative;
+          height: 100vh;
+          width: 360px;
+          background-color: aliceblue;
+          margin-left: -100%;
+      }
+
+      .ex-item {
+          position: relative;
+          height: 60px;
+          margin-left: 20px;
+          margin-top: 20px;
+      }
+
+      span {
+          line-height: 60px;
+      }
+
+      input, select {
+          position: absolute;
+          top: 50%;
+          right: 20px;
+          transform: translateY(-50%);
+          font-size: 14px;
+          width: 180px;
+          padding: 10px;
+          border: black 1px solid;
+      }
+
+      option {
+          font-size: 14px;
+      }
+
+      .btn {
+          padding: 10px;
+          width: 120px;
+          font-size: 15px;
+          margin-left: 50%;
+          transform: translateX(-50%);
+          border-radius: 5px;
+          box-shadow: #767575 0 0 5px;
+          border: none;
+          background-color: #aaaaaa;
+      }
+
+      .btn:focus,
+      .btn:active:focus,
+      .btn.active:focus,
+      .btn.focus,
+      .btn:active.focus,
+      .btn.active.focus {
+          outline: none;
+          border-color: transparent;
+      }
+
+      .btn:hover {
+          cursor: pointer;
+      }
+
+      .btn:active {
+          background-color: #797b7b;
+      }
+
+      #main {
+          width: 100%;
+          height: 100%;
+          float: left;
+      }
+
+      #field {
+          position: relative;
+          box-sizing: border-box;
+          margin-left: 360px;
+          margin-right: 600px;
+          height: 100%;
+          overflow: hidden;
+      }
+
+      #map {
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 40px;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+      }
+
+      #right {
+          position: relative;
+          float: left;
+          background-color: aliceblue;
+          width: 600px;
+          height: 100%;
+          margin-left: -600px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+      }
+
+      #right>div {
+          margin: 10px;
+          flex: 1;
+          background-color: #ffffff;
+      }
+
+      .card {
+          border: #e5e0e0 1px solid;
+          border-radius: 10px;
+          margin: 0 10px 20px 10px;
+          padding-bottom: 15px;
+          box-shadow: #939292 0 0 10px;
+      }
+
+  </style>
+
+</head>
+<body>
+
+<div id="container">
+
+  <div id="main">
+    <div id="field">
+      <div style="position:absolute; left: 50%; top: -10px; transform: translateX(-50%)">
+        <h3>网络拓扑</h3>
+      </div>
+      <canvas id="map"></canvas>
+    </div>
+  </div>
+
+  <div id="leftBar">
+    <div class="ex-item">
+      <h3>系统配置</h3>
+    </div>
+
+    <div class="card">
+      <div style="margin: 10px 0 -10px 20px"><b>name1</b></div>
+      <div class="ex-item">
+        <span>充电站个数</span>
+        <label for="cNum"></label><input id="cNum" min="0" type="number"/>
+      </div>
+      <div class="ex-item">
+        <span>节点个数</span>
+        <label for="nNum"></label><input id="nNum" min="0" type="number"/>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="margin: 10px 0 -10px 20px"><b>name2</b></div>
+      <div class="ex-item">
+        <span>充电模式</span>
+        <label for="mode"></label><select id="mode">
+        <option value="0">一对一</option>
+        <option value="1">一对多</option>
+      </select>
+      </div>
+    </div>
+
+
+    <div class="ex-item">
+      <button class="btn" id="genBtn">生成</button>
+    </div>
+  </div>
+
+  <div id="right">
+    <div style="position:relative; flex: none; height: 30px;
+    background-color: transparent; margin-top: 0; margin-bottom: 5px">
+      <h3 style="position: absolute; top: -5px; left: 20px">
+        统计分析
+      </h3>
+    </div>
+
+    <div id="graph1">1</div>
+    <div id="graph2">2</div>
+    <div id="graph3">3</div>
+    <div id="graph4">3</div>
+    <div id="graph5">3</div>
+  </div>
+
+</div>
+
+<script src="imgUtil.js"></script>
+<script src="echarts.min.js"></script>
+<script src="data.js"></script>
+<script>
+
+  let btn = document.getElementById('genBtn');
+  let charging = document.getElementById('cNum');
+  let nodes = document.getElementById('nNum');
+  let mode = document.getElementById('mode');
+
+  btn.addEventListener('click', function () {
+    clear();
+
+    let ch = parseInt(charging.value);
+    drawCar(ch);
+
+
+    let sum = parseInt(nodes.value);
+    let red = Math.ceil(Math.random() / 5 * sum);
+    let green = sum - red;
+    randGen(green, 'green');
+    randGen(red, 'red');
+
+    drawBaseStation();
+  });
+
+  drawChart('graph1', ['111', '222'], 'name', x, y1, y2);
+  drawChart('graph2', ['111', '222'], 'name', x, y1, y2);
+  drawChart('graph3', ['111', '222'], 'name', x, y1, y2);
+  drawChart('graph4', ['111', '222'], 'name', x, y1, y2);
+  drawChart('graph5', ['111', '222'], 'name', x, y1, y2);
+
+
+</script>
+
+
+</body>
+</html>

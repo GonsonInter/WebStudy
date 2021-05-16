@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+<table id="table">
+  <tr>
+    <th>序号</th>
+    <th v-for="th in tableTh">{{ th.title }}</th>
+  </tr>
+  <tr v-for="(tr, index) in dataList">
+    <td>{{ index + 1 }}</td>
+    <td v-for="td in tr">
+      {{ td }}
+    </td>
+  </tr>
+</table>
+
+
+<script>
+  new Vue({
+    el: '#table',
+    data: {
+      tableTh: {
+        c1: {
+          title: '公司名称',
+          align: 'left'
+        },
+        c2: {
+          title: '电话',
+          align: 'right'
+        }
+      },
+
+      dataList: [
+        {
+          c1: '百度',
+          c2: '123123123'
+        },
+        {
+          c1: '腾讯',
+          c2: '41515132132'
+        },
+        {
+          c1: '阿里巴巴',
+          c2: '45131254414'
+        }
+      ]
+    }
+  })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <script>
+
+    let res = ['R'];
+    let n = parseInt('5');
+    function recur(time) {
+      if (time >= n) return;
+      for (let i = 0; i < res.length; i ++) {
+        if (! (i & 1)) {
+          res.splice(i ++, 0, 'G');
+          res.splice(1 + i ++, 0, 'R');
+        }
+      }
+      recur(time + 1);
+    }
+    recur(1);
+    console.log(res.join(''));
+
+
+
+
+    let recur1 = function (num, cur) {
+      if (num === 1) return 'R';
+      if (num === 2) return 'G' + cur + 'R';
+      return recur1(num - 1, 'G') + cur + recur1(num - 1, 'R');
+    }
+    console.log(recur1(5, 'R'));
+
+
+  </script>
+
+</body>
+</html>

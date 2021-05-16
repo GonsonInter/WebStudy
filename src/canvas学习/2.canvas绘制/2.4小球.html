@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+      canvas {
+          border: 1px #333 solid;
+      }
+  </style>
+
+</head>
+<body>
+<canvas id="myCanvas" height="600" width="600">
+  你的浏览器不支持canvas
+</canvas>
+
+<script>
+  // 得到canvas画布的上下文
+  let canvas = document.getElementById('myCanvas');
+  let ctx = canvas.getContext('2d');
+
+
+  let ballArr = [];
+
+  class Ball {
+    constructor(x, y, r) {
+      this.x = x;
+      this.y = y;
+      this.r = r;
+      this.color = getRandom();
+      this.dx = Math.floor(Math.random() * 10) - 5;
+      this.dy = Math.floor(Math.random() * 10) - 5;
+      ballArr.push(this);
+    }
+
+    render() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0,  Math.PI * 2, false);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+    }
+
+    update() {
+      this.r -= 0.2;
+      this.x += this.dx;
+      this.y += this.dy;
+      if (this.r <= 0) {
+        this.remove();
+      }
+    }
+
+    remove() {
+      for (let i = 0; i < ballArr.length; i ++) {
+        if (ballArr[i] === this) {
+          ballArr.splice(i, 1);
+        }
+      }
+    }
+  }
+
+  canvas.addEventListener('mousedown', function() {
+
+    canvas.onmousemove = function (event) {
+      for (let i = 0; i < Math.random() * 5 + 1; i ++) {
+        let ball = new Ball(event.offsetX, event.offsetY, Math.random() * 20);
+      }
+    }
+
+  })
+
+  canvas.addEventListener('mouseup', function() {
+
+    canvas.onmousemove = function (event) {
+    }
+
+  })
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < ballArr.length; i ++) {
+      ballArr[i].update();
+      if (ballArr[i]) {
+
+        ballArr[i].render();
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  function getRandom() {    // 获取颜色
+    let allType = '0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f';
+    let allTypeArr = allType.split(',');
+    let color = '#';
+    for (let i = 0; i < 6; i ++) {
+      let random = Math.floor(Math.random() * allTypeArr.length);
+      color += allTypeArr[random];
+    }
+    return color;
+  }
+
+</script>
+</body>
+</html>
+
+</body>
+</html>

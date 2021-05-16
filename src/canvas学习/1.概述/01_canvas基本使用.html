@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name='viewport' content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+
+
+  <style>
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+  </style>
+
+</head>
+<body>
+
+  <canvas id="myCanvas" width="500" height="400" style="background-color: aqua">
+    你的浏览器不支持canvas
+  </canvas>
+
+  <script>
+
+    // 得到canvas画布的上下文
+    let canvas = document.getElementById('myCanvas');
+    let ctx = canvas.getContext('2d');
+    console.log(ctx);
+
+    ctx.fillStyle = 'green';
+    ctx.fillRect(100, 100, 200, 50);
+
+
+    console.log(ctx);
+  </script>
+
+</body>
+</html>

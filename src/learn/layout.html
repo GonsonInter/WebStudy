@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+
+  <style>
+      body {
+          padding: 0;
+          margin: 0;
+      }
+
+      #container {
+          background-color: #acafac;
+          padding-left: 200px;
+          padding-right: 150px;
+      }
+
+      #container .column {
+          float: left;
+          height: 100px;
+      }
+
+      #center {
+          width: 100%;
+          background-color: #77d941;
+      }
+
+      #left {
+          position: relative;
+          width: 200px; /* LC width */
+          background-color: #d8dc4a;
+          margin-left: -100%;
+          left: -200px;
+      }
+
+      #right {
+          width: 150px; /* RC width */
+          background-color: #37bfab;
+          margin-right: -150px;
+      }
+
+      #footer {
+          clear: both;
+      }
+  </style>
+
+</head>
+<body>
+
+<div id="container">
+  <div id="center" class="column">center</div>
+  <div id="left" class="column">left</div>
+  <div id="right" class="column">right</div>
+</div>
+
+</body>
+</html>
