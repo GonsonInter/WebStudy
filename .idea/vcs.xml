@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/case/vue-case" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/case/table-case" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/case/vue-case" vcs="Git" />
   </component>
