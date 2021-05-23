@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+
+  <link href="../node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+  <link href="" rel="stylesheet">
+
+  {{ block 'head' }} {{ /block }}
+
+</head>
+<body>
+
+{{ include './header.html' }}
+
+<!-- 留一个坑让将来的子页面来填 -->
+{{ block 'content' }}
+<h1> 默认内容 </h1>
+{{ /block }}
+
+
+{{ include './footer.html' }}
+
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+
+{{ block 'script' }} {{ /block }}
+
+
+
+
+</body>
+</html>
+
