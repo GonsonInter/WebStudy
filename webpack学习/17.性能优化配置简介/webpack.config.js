@@ -19,7 +19,7 @@ module.exports = {
   // webpack配置
 
   // 入口
-  entry: './src/index.js',
+  entry: './src/index.ts',
   // 输出
   output: {
     // 输出文件名

@@ -9,7 +9,7 @@ process.env.NODE_ENV = 'development;'
 
 
 module.exports = {
-  entry: './src/js/index.js',
+  entry: './src/js/index.ts',
   output: {
     filename: 'js/built.js',
     path: resolve(__dirname, 'build')

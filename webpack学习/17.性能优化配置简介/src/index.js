@@ -1,11 +1,11 @@
 /**
- * index.js 入口文件
+ * index.ts 入口文件
  *
  * 1.运行指令：
- *  开发环境：webpack ./src/index.js -o ./build/built.js --mode=development
+ *  开发环境：webpack ./src/index.ts -o ./build/built.js --mode=development
  *    webpack会以webpack ./src/index.js作为入口文件开始打包，输出到./build/built.js，
  *    整体打包环境是开发环境
- *  生产环境：webpack ./src/index.js -o ./build/built.js --mode=production
+ *  生产环境：webpack ./src/index.ts -o ./build/built.js --mode=production
  *    webpack会以webpack ./src/index.js作为入口文件开始打包，输出到./build/built.js，
  *    整体打包环境是生产环境
  *
