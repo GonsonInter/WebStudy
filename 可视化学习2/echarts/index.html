@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Index</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.1/echarts.common.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body>
+
+<div id="main" style="width: 600px; height: 600px"></div>
+
+
+<script>
+
+  var chartDom = document.getElementById('main');
+  var myChart = echarts.init(chartDom, 'essos', {renderer: 'canvas'});
+  var option;
+
+  option = {
+    title: {
+      text: 'ECharts 多系列案例'
+    },
+    xAxis: {
+      type: 'category',
+      data: ['一季度', '二季度', '三季度', '四季度']
+    },
+    yAxis: {
+      type: 'value'
+    },
+    dataset: {
+      source: [
+        ['一季度', 100, 79, '分类1', 50],
+        ['二季度', 112, 81, '分类2', 60],
+        ['三季度', 96, 88, '分类3', 55],
+        ['四季度', 123, 72, '分类4', 70]
+      ]
+    },
+    series: [{
+      name: '柱状图',
+      type: 'bar',
+      encode: {
+        x: 0,
+        y: 2
+      }
+    }, {
+      name: '分类',
+      type: 'pie',
+      center: ['65%', 60],
+      radius: 35,
+      encode: {
+        itemName: 3, value: 4
+      }
+    }, {
+      name: '折线图',
+      type: 'line',
+      encode: {
+        x: 0,
+        y: 2
+      }
+    }
+    ],
+    legend: {
+      data: [
+        {
+          name: '分类',
+          icon: 'circle',
+          textStyle: {
+            color: 'red'
+          }
+        }, '折线图', '柱状图'
+      ],
+      left: 300
+    },
+    toolbox: {
+      feature: {
+        dataZoom: {
+          yAxisIndex: false
+        },
+        restore: {},
+        saveAsImage: {}
+      }
+    },
+    dataZoom: {
+      show: true,
+      start: 0,
+      end: 100
+    }
+  };
+
+  option && myChart.setOption(option);
+</script>
+
+</body>
+</html>

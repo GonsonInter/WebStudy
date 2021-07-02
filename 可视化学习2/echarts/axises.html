@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>坐标系的应用</title>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.1.1/echarts.common.js"></script>
+  <script src="theme.js"></script>
+</head>
+<body>
+
+<div id="main" style="width: 600px;height:700px;"></div>
+
+<script>
+  let myChart = echarts.init(document.getElementById('main'));
+
+  let option = {
+    grid: [{
+      bottom: '55%',
+    }, {
+      top: '55%'
+    }],
+    xAxis: [{
+      type: 'category',
+      gridIndex: 0
+    }, {
+      type: 'category',
+      gridIndex: 1
+    }],
+    yAxis: [{
+      min: 0,
+      max: 100,
+      gridIndex: 0
+    }, {
+      splitLine: {
+        show: false
+      },
+      gridIndex: 0
+    }, {
+      min: 0,
+      max: 150,
+      gridIndex: 1
+    }],
+    dataset: {
+      source: [
+        ['product', '2012', '2013', '2014', '2015'],
+        ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
+        ['Milk Tea', 86.5, 92.1, 85.7, 83.1]
+      ]
+    },
+    series: [{
+      type: 'bar',
+      seriesLayoutBy: 'row',
+      xAxisIndex: 0,
+      yAxisIndex: 0,
+    }, {
+      type: 'line',
+      seriesLayoutBy: 'row',
+      xAxisIndex: 0,
+      yAxisIndex: 1
+    }, {
+      type: 'bar',
+      seriesLayoutBy: 'row',
+      xAxisIndex: 1,
+      yAxisIndex: 2,
+    }]
+  }
+
+  myChart.setOption(option);
+</script>
+
+</body>
+</html>

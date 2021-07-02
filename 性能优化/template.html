@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>网络性能API</title>
+
+  <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.core.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
+  <link href="https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.css">
+
+  <style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .card {
+        display: inline-block;
+        background-color: #acafac;
+        margin: 10px;
+        width: 200px;
+        height: 200px;
+    }
+
+  </style>
+
+</head>
+<body>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+
+<script>
+
+  let cards = document.getElementsByClassName('card');
+  const update = timestamp => {
+    for (let i = 0; i < cards.length; i ++) {
+      cards[i].style.width = Math.sin((1000 + timestamp / 1000 + 1) * 500) + 'px';
+    }
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('load', update)
+</script>
+
+</body>
+</html>
