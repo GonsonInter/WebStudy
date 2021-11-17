@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Title</title>
 </head>
 <body>
-$END$
+
+<script>
+  fetch('./data.json').then(res => {
+
+    return res.json();
+  }).then(res => {
+    console.log(res)
+  })
+</script>
+
 </body>
 </html>
