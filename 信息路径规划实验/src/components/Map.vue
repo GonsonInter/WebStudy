@@ -3,7 +3,8 @@
     <canvas id="axis" style="z-index: 0"></canvas>
     <canvas id="grid" style="z-index: 1"></canvas>
     <canvas id="obstacles" style="z-index: 1"></canvas>
-    <canvas id="uav-path" style="z-index: 4" v-show="uavShown"></canvas>
+    <canvas id="uav" style="z-index: 4" v-show="uavShown"></canvas>
+    <canvas id="path" style="z-index: 5" v-show="uavShown"></canvas>
     <canvas id="color-bar" style="z-index: 2" v-show="infoShown"></canvas>
     <canvas id="information" style="z-index: 3" v-show="infoShown"></canvas>
 
@@ -16,6 +17,7 @@
           v-model="infoShown"
           active-text="信息量显示"
       />
+      <el-button type="primary" size="mini" @click="handleStart">开始</el-button>
     </div>
   </div>
 </template>
@@ -32,6 +34,7 @@ const DATA_RANGE = [-50, 0];
 
 import { ObstacleMap } from 'assets/ObstacleMap';
 import { Map2D } from '@/dataprocess/dataProcess';
+import { path } from 'assets/uavPath';
 
 export default {
   name: "Map",
@@ -48,7 +51,22 @@ export default {
       colorBarY0: 0,
       colorBarX1: 0,
       colorBarY1: 0,
-      map2d: null
+      map2d: null,
+      uavs: [
+        {
+          x: 28,
+          y: 15,
+          type: 'lead'
+        }, {
+          x: 21,
+          y: 19,
+        }, {
+          x: 26,
+          y: 7,
+        }
+      ],
+      knownMap: new Map(),
+      forMap: new Map()
     }
   },
   methods: {
@@ -85,15 +103,20 @@ export default {
       this.initObstacles(this.ObstacleMap);
 
       // 无人机图层
-      let uav = document.getElementById('uav-path');
+      let uav = document.getElementById('uav');
       uav.width = this.mapWidth;
       uav.height = this.mapHeight;
 
-      const {setUAV} = this;
+      // 路径图层
+      let path = document.getElementById('path');
+      path.width = this.mapWidth;
+      path.height = this.mapHeight;
 
-      setUAV(28, 15, 'lead');
-      setUAV(26, 7);
-      setUAV(21, 19);
+      const { setUAV } = this;
+
+      for (let i = 0; i < this.uavs.length; i ++) {
+        setUAV(this.uavs[i].x, this.uavs[i].y, this.uavs[i].type);
+      }
 
       // 无人机图层
       let info = document.getElementById('information');
@@ -102,6 +125,7 @@ export default {
 
       this.map2d = new Map2D();
 
+      this.setEntropy();
     },
 
     drawAxis() {
@@ -109,7 +133,7 @@ export default {
       let ctx = axis.getContext('2d');
       ctx.strokeStyle = '#000';
       ctx.fillStyle = '#000';
-      ctx.strokeWidth = '2px';
+      ctx.lineWidth = 1;
       ctx.font = AXIS_TEXT_SIZE + "px Arial";
 
       for (let i = 0; i < 2; i++) {
@@ -198,7 +222,9 @@ export default {
           colorBarX0,
           colorBarY1
       );
-      gradient.addColorStop(1, "rgb(255,0,0)")
+      gradient.addColorStop(1, "rgb(255,0,0)");
+      gradient.addColorStop(0.95, "rgb(248,18,18)");
+      gradient.addColorStop(0.94, "rgb(250,44,25)");
       gradient.addColorStop(0.875, "rgb(253,89,0)")
       gradient.addColorStop(0.625, "rgba(255,255,0,1)")
       gradient.addColorStop(0.375, "rgba(0,255,255,1)")
@@ -302,18 +328,106 @@ export default {
     },
 
     setUAV(x, y, type = 'normal') {
-      let uav_path = document.getElementById('uav-path');
-      let ctx = uav_path.getContext('2d');
-      let img = new Image();
-      img.src = require('assets/uav-normal.png');
-      if (type === 'lead') {
-        img.src = require('assets/uav-lead.png');
+
+      return new Promise(resolve => {
+        let uav_path = document.getElementById('uav');
+        let ctx = uav_path.getContext('2d');
+        let img = new Image();
+        img.src = require('assets/uav-normal.png');
+        if (type === 'lead') {
+          img.src = require('assets/uav-lead.png');
+        }
+        img.onload = () => {
+          ctx.drawImage(img, ...this.getPosByCord(x, y).map(item => {
+            return item - GRID_LENGTH / 2;
+          }), GRID_LENGTH, GRID_LENGTH);
+          resolve();
+        }
+
+        this.knownMap.set([x, y].toString(), DATA_RANGE[0]);
+        this.forMap.delete([x, y].toString());
+      })
+
+    },
+
+    setEntropyForOneGrid(x, y, value) {
+      let info = document.getElementById('information');
+      let ctx = info.getContext('2d');
+      this.fillByCord(ctx, x, y, this.selectColor(value));
+    },
+
+    setEntropy() {
+
+      let ObSet = new Set(ObstacleMap.map(item => item.toString()));
+      for (let i = 0; i < MAP_WIDTH; i ++) {
+        for (let j = 0; j < MAP_HEIGHT; j ++) {
+
+          let cord = [i, j];
+          if (ObSet.has(cord.toString())) continue;
+
+          let dataList = [];
+          Array.from(this.knownMap.keys()).forEach(item => {
+            dataList.push(this.map2d.getEntropyFromKnown(
+                [...item.split(',').map(t => parseInt(t))],
+                DATA_RANGE[1], [i, j], DATA_RANGE
+            ))
+          });
+
+          let data = this.map2d.dataFuse(dataList);
+
+          this.setEntropyForOneGrid(i, j, data);
+          this.forMap.set([i, j].toString(), data);
+
+          if (this.knownMap.has([i, j].toString())) {
+            this.forMap.delete([i, j].toString());
+          }
+        }
       }
-      img.onload = () => {
-        ctx.drawImage(img, ...this.getPosByCord(x, y).map(item => {
-          return item - GRID_LENGTH / 2;
-        }), GRID_LENGTH, GRID_LENGTH);
+    },
+
+    drawPath(ctx, from, to, style) {
+      ctx.strokeStyle = style;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(...this.getPosByCord(...from));
+      ctx.lineTo(...this.getPosByCord(...to));
+      ctx.stroke();
+      ctx.closePath();
+    },
+
+    async moveUAV() {
+      // let path = document.getElementById('path');
+      // path.width = this.mapWidth;
+      for (let i = 0; i + 2 < path.length; i += 3) {
+        let uav_graph = document.getElementById('uav');
+        let ctx = document.getElementById('path').getContext('2d');
+        uav_graph.width = this.mapWidth;
+        await this.setUAV(...path[i], 'lead');
+        this.drawPath(ctx, [this.uavs[0].x, this.uavs[0].y], path[i], '#00FF00');
+        this.uavs[0].x = path[i][0];
+        this.uavs[0].y = path[i][1];
+
+        await this.setUAV(...path[i + 1], 'normal');
+        this.drawPath(ctx, [this.uavs[1].x, this.uavs[1].y], path[i + 1], '#FF0000');
+        this.uavs[1].x = path[i + 1][0];
+        this.uavs[1].y = path[i + 1][1];
+
+        await this.setUAV(...path[i + 2], 'normal');
+        this.drawPath(ctx, [this.uavs[2].x, this.uavs[2].y], path[i + 2], '#0000FF');
+        this.uavs[2].x = path[i + 2][0];
+        this.uavs[2].y = path[i + 2][1];
+
+        this.setEntropy();
+
+        await new Promise(resolve => {
+          setTimeout(() => resolve(), 100);
+        })
       }
+    },
+
+    handleStart() {
+      this.init();
+      this.moveUAV();
     }
   },
   mounted() {

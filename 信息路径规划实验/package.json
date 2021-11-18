@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "echarts": "^5.2.2",
     "element-ui": "^2.15.6",
     "node-sass": "^6.0.1",
     "sass": "^1.43.4",

@@ -1,11 +1,11 @@
-import {ObstacleMap} from '../assets/ObstacleMap';
+import { ObstacleMap } from '../assets/ObstacleMap';
 
 class POI {
-  constructor(x, y, visited = false, information = 0) {
+  constructor(x, y, visited = false, entropy = 0) {
     this.x = x;
     this.y = y;
     this.visited = visited;
-    this.information = information;
+    this.entropy = entropy;
   }
 }
 
@@ -110,6 +110,40 @@ class Map2D {
         item[1] + from[1]
       ]
     });
+  }
+
+  /**
+   * 根据已知点的熵得到未知点的熵
+   * @param source  源坐标
+   * @param sourceValue  源熵
+   * @param target  目的坐标
+   * @param targetValue  目的熵
+   * @param range   数据范围
+   * @returns {*}
+   */
+  getEntropyFromKnown(source, sourceValue, target, range) {
+    if (!(source instanceof Array) && !(target instanceof Array)) {
+      source = [source.x, source.y];
+      target = [target.x, target.y];
+    }
+    if (this.hasObstacle(source, target)) return range[0];
+
+    // 距离函数
+    function dist(source, target) {
+      return Math.sqrt(Math.pow(source[0] - target[0], 2) + Math.pow(source[1] - target[1], 2));
+    }
+
+    let dataRange = range[1] - range[0];
+    function getValue(sourceValue, dist) {
+      if (dist === 0) return sourceValue;
+      return range[0] + dataRange / (dist + 0.2);
+    }
+
+    return getValue(sourceValue, dist(source, target));
+  }
+
+  dataFuse(dataList) {
+    return Math.max(...dataList);
   }
 }
 
