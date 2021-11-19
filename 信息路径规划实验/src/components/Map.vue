@@ -61,12 +61,13 @@ export default {
           x: 21,
           y: 19,
         }, {
-          x: 26,
+          x: 25,
           y: 7,
         }
       ],
       knownMap: new Map(),
-      forMap: new Map()
+      forMap: new Map(),
+      obSet: new Set()
     }
   },
   methods: {
@@ -323,6 +324,7 @@ export default {
       let ctx = obstacles.getContext('2d');
 
       arr.forEach(pos => {
+        this.obSet.add(pos.toString());
         this.fillByCord(ctx, ...pos, '#000');    // 障碍物填充为黑色
       })
     },
@@ -395,9 +397,24 @@ export default {
       ctx.closePath();
     },
 
+    infoStatistic() {
+      let sum = 0;
+      for(let i = 0; i < MAP_WIDTH; i ++) {
+        for (let j = 0; j < MAP_HEIGHT; j ++) {
+          if (this.obSet.has([i, j].toString())) continue;
+          sum += (this.knownMap.get([i, j].toString()) ||
+              this.forMap.get([i, j].toString())) - DATA_RANGE[0];
+        }
+      }
+      return sum;
+     },
+
     async moveUAV() {
       // let path = document.getElementById('path');
       // path.width = this.mapWidth;
+
+      let infoList = [];
+
       for (let i = 0; i + 2 < path.length; i += 3) {
         let uav_graph = document.getElementById('uav');
         let ctx = document.getElementById('path').getContext('2d');
@@ -419,10 +436,14 @@ export default {
 
         this.setEntropy();
 
+        infoList.push(this.infoStatistic());
+
         await new Promise(resolve => {
           setTimeout(() => resolve(), 100);
         })
       }
+
+      console.log(infoList);
     },
 
     handleStart() {
