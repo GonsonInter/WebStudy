@@ -136,7 +136,7 @@ class Map2D {
     let dataRange = range[1] - range[0];
     function getValue(sourceValue, dist) {
       if (dist === 0) return sourceValue;
-      return range[0] + dataRange / (dist + 0.2);
+      return range[0] + dataRange / (dist + 0.2) + (Math.random() - 0.6) * 10 / dist;
     }
 
     return getValue(sourceValue, dist(source, target));

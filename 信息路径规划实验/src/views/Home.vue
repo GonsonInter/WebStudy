@@ -4,8 +4,12 @@
       <Map @dataChange="handleDataChange"/>
     </div>
 
-    <div id="graph-container">
+    <div class="graph-container">
       <div id="main" style="width: 100%; height: 100%"></div>
+    </div>
+
+    <div class="graph-container">
+      <div id="main1" style="width: 100%; height: 100%"></div>
     </div>
   </div>
 </template>
@@ -13,6 +17,7 @@
 <script>
 import Map from 'components/Map';
 import { option } from '@/dataprocess/drawChart';
+import { option1 } from '@/dataprocess/drawChart1';
 import * as echarts from 'echarts';
 
 export default {
@@ -35,6 +40,10 @@ export default {
     let chartDom = document.getElementById('main');
     let myChart = echarts.init(chartDom);
     option && myChart.setOption(option);
+
+    let chartDom1 = document.getElementById('main1');
+    let myChart1 = echarts.init(chartDom1);
+    option1 && myChart1.setOption(option1);
   }
 }
 </script>
@@ -45,7 +54,7 @@ export default {
   height: 820px;
 }
 
-#graph-container {
+.graph-container {
   height: 1000px;
 }
 </style>
